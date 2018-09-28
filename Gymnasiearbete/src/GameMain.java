@@ -47,7 +47,7 @@ public class GameMain extends JFrame implements KeyListener{
         double x = gameCanvas.getWidth()/2 - shipImg.getWidth(null)/2;  
         double y = gameCanvas.getHeight() - shipImg.getHeight(null);  
           
-        ship = new ShipEntity(shipImg, x, y, 4);  
+        ship = new ShipEntity(shipImg, x, y, 800);  
     }  
       
     public void createWindow(){  
@@ -65,9 +65,9 @@ public class GameMain extends JFrame implements KeyListener{
     }  
   
     public void update(long deltaTime){
-        if(keyDown.get("right"))
+        if(keyDown.get("right") && ship.xPos < (gameCanvas.getWidth() - 64))
             ship.setDirectionX(1);
-        else if(keyDown.get("left"))
+        else if(keyDown.get("left") && ship.xPos > 0)
             ship.setDirectionX(-1);
         else
             ship.setDirectionX(0);
@@ -95,7 +95,7 @@ public class GameMain extends JFrame implements KeyListener{
         while(gameRunning){
             long deltaTime = System.nanoTime() - lastUpdateTime;
 
-            if(deltaTime > 33333333){
+            if(deltaTime > 33333){
                 lastUpdateTime = System.nanoTime();
                 update(deltaTime);
                 render();
