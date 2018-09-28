@@ -31,7 +31,7 @@ public class GameMain extends JFrame implements KeyListener{
         keyDown.put("left", false);  
         keyDown.put("right", false); 
         keyDown.put("space", false);
-        //version 2
+        
         createWindow();  
         loadObjects();  
         gameLoop();  
