@@ -31,7 +31,8 @@ public class GameMain extends JFrame implements KeyListener{
         keyDown.put("left", false);  
         keyDown.put("right", false); 
         keyDown.put("space", false);
-        
+        keyDown.put("up", false);
+
         createWindow();  
         loadObjects();  
         gameLoop();  
@@ -71,6 +72,11 @@ public class GameMain extends JFrame implements KeyListener{
             ship.setDirectionX(-1);
         else
             ship.setDirectionX(0);
+        
+        if(keyDown.get("up"))
+            ship.setDirectionY(-1);
+        else
+            ship.setDirectionY(0);
         
         if(keyDown.get("space")){
         	ship.tryToFire();
@@ -123,7 +129,9 @@ public class GameMain extends JFrame implements KeyListener{
         else if(key == KeyEvent.VK_RIGHT)  
             keyDown.put("right", true);  
         else if(key == KeyEvent.VK_SPACE)  
-            keyDown.put("space", true);  
+            keyDown.put("space", true);
+        else if(key == KeyEvent.VK_UP)  
+            keyDown.put("up", true);  
     }  
   
     public void keyReleased(KeyEvent e) {  
@@ -135,6 +143,8 @@ public class GameMain extends JFrame implements KeyListener{
             keyDown.put("right", false);  
         else if(key == KeyEvent.VK_SPACE)  
             keyDown.put("space", false); 
+        else if(key == KeyEvent.VK_UP)  
+            keyDown.put("up", false); 
     }  
     public void keyTyped(KeyEvent e) {  
     	  
