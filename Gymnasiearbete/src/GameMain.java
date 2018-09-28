@@ -63,7 +63,6 @@ public class GameMain extends JFrame implements KeyListener{
 		this.setResizable(false);
         gameCanvas.createBufferStrategy(2); 
         backBuffer = gameCanvas.getBufferStrategy();
-        
     }  
   
     public void update(long deltaTime){
