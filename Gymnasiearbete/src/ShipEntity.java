@@ -22,6 +22,7 @@ public class ShipEntity extends Entity{
  
  	public void move(long deltaTime){
  	    xPos += dx*(deltaTime/1000000000.0)*speed;
+ 	   yPos += dy*(deltaTime/1000000000.0)*speed;
  	}
 
 

@@ -27,7 +27,15 @@ public abstract class Entity {
                 image.getHeight(null));
     }
     
-    public double getxPos() {
+    public Image getImage() {
+		return image;
+	}
+
+	public void setImage(Image image) {
+		this.image = image;
+	}
+
+	public double getxPos() {
 		return xPos;
 	}
 
