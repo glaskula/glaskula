@@ -25,6 +25,9 @@ public class GameMain extends JFrame implements KeyListener{
     private ShipEntity ship;  
     
     private Image upright;
+    private Image upleft;
+    private Image downright;
+    private Image downleft;
     private Image down;
     private Image left;  
     private Image right;
@@ -57,7 +60,9 @@ public class GameMain extends JFrame implements KeyListener{
         right = new ImageIcon("images/playerright.png").getImage().getScaledInstance(100, 61,Image.SCALE_DEFAULT);  
         down = new ImageIcon("images/playerdown.png").getImage().getScaledInstance(61, 100,Image.SCALE_DEFAULT); 
         upright = new ImageIcon("images/playerupright.png").getImage().getScaledInstance(90, 90,Image.SCALE_DEFAULT); 
-
+        upleft = new ImageIcon("images/playerupleft.png").getImage().getScaledInstance(90, 90,Image.SCALE_DEFAULT); 
+        downright = new ImageIcon("images/playerdownright.png").getImage().getScaledInstance(90, 90,Image.SCALE_DEFAULT); 
+        downleft = new ImageIcon("images/playerdownleft.png").getImage().getScaledInstance(90, 90,Image.SCALE_DEFAULT); 
 
           
         double x = gameCanvas.getWidth()/2 - shipImg.getWidth(null)/2;  
@@ -68,11 +73,11 @@ public class GameMain extends JFrame implements KeyListener{
       
     public void createWindow(){  
     	gameCanvas = new Canvas();
-    	gameCanvas.setSize(800, 600);
+    	gameCanvas.setSize(1440, 1000);
         gameCanvas.setFocusable(false);  
   
         this.add(gameCanvas);  
-        this.setMinimumSize(new Dimension(800, 600));
+        this.setMinimumSize(new Dimension(1440, 800));
         this.pack(); 
         this.setVisible(true);  
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);  
@@ -96,7 +101,8 @@ public class GameMain extends JFrame implements KeyListener{
         else if(keyDown.get("left") && ship.xPos > 0) {
         	ship.setImage(left);
             ship.setDirectionX(-1);
-        }else {
+        }
+        else {
             ship.setDirectionX(0);
         }
         
@@ -116,9 +122,23 @@ public class GameMain extends JFrame implements KeyListener{
             ship.setDirectionY(0);
         }
         
-    	if(keyDown.get("right") && (keyDown.get("up"))) {
+    	if(keyDown.get("right") && (keyDown.get("up")) && ship.xPos < (gameCanvas.getWidth() - width) && ship.yPos < (gameCanvas.getHeight() - height) && 0 < ship.yPos) {
    		 	ship.setImage(upright);
         } 
+    	
+    	if(keyDown.get("left") && (keyDown.get("up")) && ship.xPos > 0 && ship.yPos < (gameCanvas.getHeight() - height) && 0 < ship.yPos) {
+   		 	ship.setImage(upleft);
+        } 
+    	
+    	if(keyDown.get("right") && (keyDown.get("down")) && ship.xPos < (gameCanvas.getWidth() - width) && ship.yPos < (gameCanvas.getHeight() - height) && 0 < ship.yPos) {
+   		 	ship.setImage(downright);
+        } 
+    	
+    	if(keyDown.get("left") && (keyDown.get("down")) && ship.xPos > 0 && ship.yPos < (gameCanvas.getHeight() - height) && 0 < ship.yPos) {
+   		 	ship.setImage(downleft);
+        } 
+    	
+    	
     	
         if(keyDown.get("space")){
         	ship.tryToFire();
@@ -130,7 +150,7 @@ public class GameMain extends JFrame implements KeyListener{
         Graphics2D g = (Graphics2D)backBuffer.getDrawGraphics();
 
         g.setColor(Color.BLACK);
-        g.fillRect(0, 0, 800, 600);
+        g.fillRect(0, 0, gameCanvas.getWidth(), gameCanvas.getHeight());
         ship.draw(g);
 
         g.dispose();
@@ -144,6 +164,7 @@ public class GameMain extends JFrame implements KeyListener{
             long deltaTime = System.nanoTime() - lastUpdateTime;
 
             if(deltaTime > 33333){
+            	
                 lastUpdateTime = System.nanoTime();
                 update(deltaTime);
                 render();
@@ -164,32 +185,33 @@ public class GameMain extends JFrame implements KeyListener{
   
     /** Spelets tangentbordslyssnare */  
     public void keyPressed(KeyEvent e) {  
+    	//	System.out.println("KeyPress");
         int key = e.getKeyCode();  
   
-        if(key == KeyEvent.VK_LEFT)  
+        if(key == KeyEvent.VK_A)  
             keyDown.put("left", true);  
-        else if(key == KeyEvent.VK_RIGHT)  
+        else if(key == KeyEvent.VK_D)  
             keyDown.put("right", true);  
         else if(key == KeyEvent.VK_SPACE)  
             keyDown.put("space", true);
-        else if(key == KeyEvent.VK_UP)  
+        else if(key == KeyEvent.VK_W)  
             keyDown.put("up", true);  
-        else if(key == KeyEvent.VK_DOWN)  
+        else if(key == KeyEvent.VK_S)  
             keyDown.put("down", true);  
     }  
   
     public void keyReleased(KeyEvent e) {  
         int key = e.getKeyCode();  
   
-        if(key == KeyEvent.VK_LEFT)  
+        if(key == KeyEvent.VK_A)  
             keyDown.put("left", false);  
-        else if(key == KeyEvent.VK_RIGHT)  
+        else if(key == KeyEvent.VK_D)  
             keyDown.put("right", false);  
         else if(key == KeyEvent.VK_SPACE)  
             keyDown.put("space", false); 
-        else if(key == KeyEvent.VK_UP)  
+        else if(key == KeyEvent.VK_W)  
             keyDown.put("up", false); 
-        else if(key == KeyEvent.VK_DOWN)  
+        else if(key == KeyEvent.VK_S)  
             keyDown.put("down", false); 
     }  
     public void keyTyped(KeyEvent e) {  
