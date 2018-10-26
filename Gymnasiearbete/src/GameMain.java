@@ -73,7 +73,7 @@ public class GameMain extends JFrame implements KeyListener{
       
     public void createWindow(){  
     	gameCanvas = new Canvas();
-    	gameCanvas.setSize(1440, 1000);
+    	gameCanvas.setSize(1440, 800);
         gameCanvas.setFocusable(false);  
   
         this.add(gameCanvas);  
@@ -143,6 +143,8 @@ public class GameMain extends JFrame implements KeyListener{
         if(keyDown.get("space")){
         	ship.tryToFire();
         }
+
+        
         ship.move(deltaTime);
     }
   
