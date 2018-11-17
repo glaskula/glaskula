@@ -23,8 +23,7 @@ public abstract class Entity {
      	this.yPos = yPos;
      	this.speed = speed;
      	
-     	rec = new Rectangle((int)xPos, (int)yPos, image.getWidth(null), 
-                image.getHeight(null));
+     	rec = new Rectangle((int)xPos, (int)yPos, image.getWidth(null), image.getHeight(null));
     }
     
     public Image getImage() {

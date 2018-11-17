@@ -36,7 +36,7 @@ public class GameMain extends JFrame implements KeyListener{
     ArrayList<Entity> spriteList = new ArrayList<>();
   
     public GameMain(){  
-        super("Space Invader");   
+        super("Ett välstrukturerat och extremt bra gymnasiearbete");   
         addKeyListener(this);  
   
         keyDown.put("left", false);  
@@ -56,13 +56,13 @@ public class GameMain extends JFrame implements KeyListener{
          * ship = new ImageIcon(getClass().getResource("/ship.png")).getImage(); 
          */  
         shipImg = new ImageIcon("images/player.png").getImage();  
-        left = new ImageIcon("images/playerleft.png").getImage().getScaledInstance(100, 61,Image.SCALE_DEFAULT); 
-        right = new ImageIcon("images/playerright.png").getImage().getScaledInstance(100, 61,Image.SCALE_DEFAULT);  
-        down = new ImageIcon("images/playerdown.png").getImage().getScaledInstance(61, 100,Image.SCALE_DEFAULT); 
-        upright = new ImageIcon("images/playerupright.png").getImage().getScaledInstance(90, 90,Image.SCALE_DEFAULT); 
-        upleft = new ImageIcon("images/playerupleft.png").getImage().getScaledInstance(90, 90,Image.SCALE_DEFAULT); 
-        downright = new ImageIcon("images/playerdownright.png").getImage().getScaledInstance(90, 90,Image.SCALE_DEFAULT); 
-        downleft = new ImageIcon("images/playerdownleft.png").getImage().getScaledInstance(90, 90,Image.SCALE_DEFAULT); 
+        left = new ImageIcon("images/playerleft.png").getImage(); 
+        right = new ImageIcon("images/playerright.png").getImage();  
+        down = new ImageIcon("images/playerdown.png").getImage(); 
+        upright = new ImageIcon("images/playerupright.png").getImage(); 
+        upleft = new ImageIcon("images/playerupleft.png").getImage(); 
+        downright = new ImageIcon("images/playerdownright.png").getImage(); 
+        downleft = new ImageIcon("images/playerdownleft.png").getImage(); 
 
           
         double x = gameCanvas.getWidth()/2 - shipImg.getWidth(null)/2;  
@@ -138,20 +138,19 @@ public class GameMain extends JFrame implements KeyListener{
    		 	ship.setImage(downleft);
         } 
     	
-    	
-    	
         if(keyDown.get("space")){
         	ship.tryToFire();
         }
 
-        
+    	ship.checkCollisionWhithMissiles();
+    	
         ship.move(deltaTime);
     }
   
     public void render(){  
         Graphics2D g = (Graphics2D)backBuffer.getDrawGraphics();
 
-        g.setColor(Color.BLACK);
+        g.setColor(Color.WHITE);
         g.fillRect(0, 0, gameCanvas.getWidth(), gameCanvas.getHeight());
         ship.draw(g);
 
@@ -173,47 +172,36 @@ public class GameMain extends JFrame implements KeyListener{
             }
         }
     }
-    
-    public void checkCollisionAndRemove(){
-        ArrayList<Entity> removeList = new ArrayList<>();
-
-        // alien <-> missile
-        if(ship.missile != null && ship.missile.getActive()){
-             // Egen kod här!
-        }
-
-        spriteList.removeAll(removeList); // Alt namnet på arraylist
-    }
   
     /** Spelets tangentbordslyssnare */  
     public void keyPressed(KeyEvent e) {  
     	//	System.out.println("KeyPress");
         int key = e.getKeyCode();  
   
-        if(key == KeyEvent.VK_A)  
+        if(key == KeyEvent.VK_LEFT)  
             keyDown.put("left", true);  
-        else if(key == KeyEvent.VK_D)  
+        else if(key == KeyEvent.VK_RIGHT)  
             keyDown.put("right", true);  
         else if(key == KeyEvent.VK_SPACE)  
             keyDown.put("space", true);
-        else if(key == KeyEvent.VK_W)  
+        else if(key == KeyEvent.VK_UP)  
             keyDown.put("up", true);  
-        else if(key == KeyEvent.VK_S)  
+        else if(key == KeyEvent.VK_DOWN)  
             keyDown.put("down", true);  
     }  
   
     public void keyReleased(KeyEvent e) {  
         int key = e.getKeyCode();  
   
-        if(key == KeyEvent.VK_A)  
+        if(key == KeyEvent.VK_LEFT)  
             keyDown.put("left", false);  
-        else if(key == KeyEvent.VK_D)  
+        else if(key == KeyEvent.VK_RIGHT)  
             keyDown.put("right", false);  
         else if(key == KeyEvent.VK_SPACE)  
             keyDown.put("space", false); 
-        else if(key == KeyEvent.VK_W)  
+        else if(key == KeyEvent.VK_UP)  
             keyDown.put("up", false); 
-        else if(key == KeyEvent.VK_S)  
+        else if(key == KeyEvent.VK_DOWN)  
             keyDown.put("down", false); 
     }  
     public void keyTyped(KeyEvent e) {  

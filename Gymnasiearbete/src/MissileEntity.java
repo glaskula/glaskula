@@ -7,7 +7,7 @@ import javax.swing.ImageIcon;
 public class MissileEntity extends Entity {
     	
 	
-    public MissileEntity(Image image, double xPos, double yPos, int speed) {
+    public MissileEntity(Image image, double xPos, double yPos, int speed ) {
         super(image, xPos, yPos, speed);
         
         dx = 0;
@@ -50,7 +50,9 @@ public class MissileEntity extends Entity {
         if (xPos >= 1360 || xPos <= 0) {
         	dx = dx * -1;
         }
-        
+      
     }
+
+
     
 }
