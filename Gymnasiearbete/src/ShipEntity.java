@@ -8,6 +8,8 @@ import javax.swing.ImageIcon;
 public class ShipEntity extends Entity{
 
 	public MissileEntity missile = null;
+	
+	
 
 	public ArrayList<MissileEntity> missileArray = new ArrayList<>();
 
@@ -24,7 +26,7 @@ public class ShipEntity extends Entity{
 	}
 
 	public boolean tryToFire(){
-		missile = new MissileEntity(new ImageIcon("images/missile.png").getImage(), xPos-11, yPos, 10);
+		missile = new MissileEntity(new ImageIcon("images/missile.png").getImage(), xPos, yPos, 10);
 		missile.setActive(true);
 
 		missileArray.add(missile);
@@ -56,7 +58,7 @@ public class ShipEntity extends Entity{
 		double speedFactor = 1;
 
 		if(dx != 0 && dy != 0) {
-			speedFactor = Math.sqrt(2);
+			speedFactor = 1.41;
 		}
 
 		xPos += dx*(deltaTime/1000000018.0)*speed/speedFactor;

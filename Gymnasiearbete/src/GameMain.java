@@ -18,11 +18,14 @@ public class GameMain extends JFrame implements KeyListener{
      
     private boolean gameRunning = true;  
     private BufferStrategy backBuffer;
+    private long lastUpdateTimefps;
     private long lastUpdateTime;
+    private int ammo = 0;
   
     private HashMap<String, Boolean> keyDown = new HashMap<>();  
       
     private ShipEntity ship;  
+    private DotEntity dot;  
     
     private Image upright;
     private Image upleft;
@@ -32,8 +35,10 @@ public class GameMain extends JFrame implements KeyListener{
     private Image left;  
     private Image right;
     private Image shipImg;
+    private Image dotImg;
     
-    ArrayList<Entity> spriteList = new ArrayList<>();
+    
+    ArrayList<DotEntity> dotList = new ArrayList<>();
   
     public GameMain(){  
         super("Ett välstrukturerat och extremt bra gymnasiearbete");   
@@ -44,6 +49,8 @@ public class GameMain extends JFrame implements KeyListener{
         keyDown.put("space", false);
         keyDown.put("up", false);
         keyDown.put("down", false);
+        
+        lastUpdateTime = System.currentTimeMillis();
 
         createWindow();  
         loadObjects();  
@@ -63,12 +70,14 @@ public class GameMain extends JFrame implements KeyListener{
         upleft = new ImageIcon("images/playerupleft.png").getImage(); 
         downright = new ImageIcon("images/playerdownright.png").getImage(); 
         downleft = new ImageIcon("images/playerdownleft.png").getImage(); 
+        dotImg = new ImageIcon("images/dotImg.png").getImage();
 
           
         double x = gameCanvas.getWidth()/2 - shipImg.getWidth(null)/2;  
         double y = gameCanvas.getHeight() - shipImg.getHeight(null);  
           
         ship = new ShipEntity(shipImg, x, y, 800);  
+        dot = new DotEntity(dotImg);  
     }  
       
     public void createWindow(){  
@@ -138,11 +147,26 @@ public class GameMain extends JFrame implements KeyListener{
    		 	ship.setImage(downleft);
         } 
     	
-        if(keyDown.get("space")){
+    	if(keyDown.get("space") && ammo == 3){
         	ship.tryToFire();
+        	ammo = 0;
+    	}
+    	
+		long deltaTimedot = System.currentTimeMillis() - lastUpdateTime;
+        if (deltaTimedot > 3000) {
+            dot = new DotEntity(dotImg);  
+    		dotList.add(dot);
+    		lastUpdateTime = System.currentTimeMillis();
         }
-
+    	
     	ship.checkCollisionWhithMissiles();
+    	
+    	for(int i = 0; i < dotList.size(); i++) {
+    		if(ship.collision(dotList.get(i)) && ammo < 3) {
+    			dotList.remove(dotList.get(i));
+    			ammo++;
+    		}
+    	}
     	
         ship.move(deltaTime);
     }
@@ -153,20 +177,25 @@ public class GameMain extends JFrame implements KeyListener{
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, gameCanvas.getWidth(), gameCanvas.getHeight());
         ship.draw(g);
-
+        
+    	if(!dotList.isEmpty()) {
+    		for(int i = 0; i < dotList.size(); i++)
+    			dotList.get(i).draw(g);
+    	}
+    	
         g.dispose();
         backBuffer.show();
     }  
   
     public void gameLoop(){
-        lastUpdateTime = System.nanoTime();
+        lastUpdateTimefps = System.nanoTime();
 
         while(gameRunning){
-            long deltaTime = System.nanoTime() - lastUpdateTime;
+            long deltaTime = System.nanoTime() - lastUpdateTimefps;
 
             if(deltaTime > 33333){
             	
-                lastUpdateTime = System.nanoTime();
+                lastUpdateTimefps = System.nanoTime();
                 update(deltaTime);
                 render();
             }
@@ -197,12 +226,13 @@ public class GameMain extends JFrame implements KeyListener{
             keyDown.put("left", false);  
         else if(key == KeyEvent.VK_RIGHT)  
             keyDown.put("right", false);  
-        else if(key == KeyEvent.VK_SPACE)  
+        else if(key == KeyEvent.VK_SPACE) {  
             keyDown.put("space", false); 
-        else if(key == KeyEvent.VK_UP)  
+        }else if(key == KeyEvent.VK_UP)  
             keyDown.put("up", false); 
         else if(key == KeyEvent.VK_DOWN)  
             keyDown.put("down", false); 
+       
     }  
     public void keyTyped(KeyEvent e) {  
     	  

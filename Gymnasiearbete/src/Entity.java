@@ -17,6 +17,16 @@ public abstract class Entity {
     /**
      * Konstruktor
      */
+    
+    public Entity (Image image) {
+    	this.image = image;   
+     	this.xPos = 0;
+     	this.yPos = 0;
+     	this.speed = 0;
+     	
+     	rec = new Rectangle((int)xPos, (int)yPos, image.getWidth(null), image.getHeight(null));
+    	
+    }
     public Entity (Image image, double xPos, double yPos, int speed){
      	this.image = image;   
      	this.xPos = xPos;
