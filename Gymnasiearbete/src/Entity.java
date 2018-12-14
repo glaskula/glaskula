@@ -17,7 +17,7 @@ public abstract class Entity {
     /**
      * Konstruktor
      */
-    
+  
     public Entity (Image image) {
     	this.image = image;   
      	this.xPos = 0;

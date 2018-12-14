@@ -53,8 +53,7 @@ public class ShipEntity extends Entity{
 			for(int i = 0; i < missileArray.size(); i++)
 				missileArray.get(i).move(deltaTime);
 		}
-
-
+		
 		double speedFactor = 1;
 
 		if(dx != 0 && dy != 0) {
