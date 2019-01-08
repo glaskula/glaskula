@@ -1,6 +1,7 @@
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
@@ -8,12 +9,14 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Scanner;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 public class GameMain extends JFrame implements KeyListener{  
       
+    Scanner keyboard = new Scanner(System.in);
     private Canvas gameCanvas = new Canvas();  
      
     private boolean gameRunning = true;  
@@ -49,6 +52,7 @@ public class GameMain extends JFrame implements KeyListener{
         keyDown.put("space", false);
         keyDown.put("up", false);
         keyDown.put("down", false);
+        keyDown.put("enter", false);
         
         lastUpdateTime = System.currentTimeMillis();
 
@@ -167,6 +171,7 @@ public class GameMain extends JFrame implements KeyListener{
     			ammo++;
     		}
     	}
+
     	
         ship.move(deltaTime);
     }
@@ -177,11 +182,34 @@ public class GameMain extends JFrame implements KeyListener{
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, gameCanvas.getWidth(), gameCanvas.getHeight());
         ship.draw(g);
+
         
     	if(!dotList.isEmpty()) {
     		for(int i = 0; i < dotList.size(); i++)
     			dotList.get(i).draw(g);
     	}
+    	
+        g.setColor(Color.BLACK);
+        g.setFont(new Font("Copperplate Gothic Bold", Font.PLAIN, 80));
+    	g.drawString(ammo + "/3", 1300, 780);
+        g.setFont(new Font("Copperplate Gothic Bold", Font.PLAIN, 60));
+    	g.drawString("Score: " + ship.missileArray.size(), 0, 50);
+    	
+    	if(ship.getCollisionCheck() == 0) {
+            g.setFont(new Font("Copperplate Gothic Bold", Font.PLAIN, 100));
+        	g.drawString("Gameover", 500, 300);
+            g.setFont(new Font("Copperplate Gothic Bold", Font.PLAIN, 80));
+        	g.drawString("Score: " + ship.missileArray.size(), 565, 500);
+        	
+            g.setColor(Color.RED);
+            g.setFont(new Font("Copperplate Gothic Bold", Font.PLAIN, 80));
+        	g.drawString("Press Enter to play again", 280, 600);
+            if(keyDown.get("enter")) {
+            	new GameMain().setVisible(false);
+                new GameMain();  
+            }
+    	}
+    	
     	
         g.dispose();
         backBuffer.show();
@@ -194,10 +222,12 @@ public class GameMain extends JFrame implements KeyListener{
             long deltaTime = System.nanoTime() - lastUpdateTimefps;
 
             if(deltaTime > 33333){
-            	
                 lastUpdateTimefps = System.nanoTime();
-                update(deltaTime);
+                
                 render();
+                if(ship.getCollisionCheck() == 1) {
+                	update(deltaTime);
+                }
             }
         }
     }
@@ -217,6 +247,17 @@ public class GameMain extends JFrame implements KeyListener{
             keyDown.put("up", true);  
         else if(key == KeyEvent.VK_DOWN)  
             keyDown.put("down", true);  
+        else if(key == KeyEvent.VK_ENTER)  
+            keyDown.put("enter", true);  
+        
+        if(key == KeyEvent.VK_D)  
+            keyDown.put("left", true);  
+        else if(key == KeyEvent.VK_G)  
+            keyDown.put("right", true);  
+        else if(key == KeyEvent.VK_R)  
+            keyDown.put("up", true);  
+        else if(key == KeyEvent.VK_F)  
+            keyDown.put("down", true);  
     }  
   
     public void keyReleased(KeyEvent e) {  
@@ -232,6 +273,17 @@ public class GameMain extends JFrame implements KeyListener{
             keyDown.put("up", false); 
         else if(key == KeyEvent.VK_DOWN)  
             keyDown.put("down", false); 
+        else if(key == KeyEvent.VK_ENTER)  
+            keyDown.put("enter", false);  
+        
+        if(key == KeyEvent.VK_D)  
+            keyDown.put("left", false);  
+        else if(key == KeyEvent.VK_G)  
+            keyDown.put("right", false);  
+        else if(key == KeyEvent.VK_R)  
+            keyDown.put("up", false);  
+        else if(key == KeyEvent.VK_F)  
+            keyDown.put("down", false);
        
     }  
     public void keyTyped(KeyEvent e) {  

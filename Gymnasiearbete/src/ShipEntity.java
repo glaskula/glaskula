@@ -9,7 +9,17 @@ public class ShipEntity extends Entity{
 
 	public MissileEntity missile = null;
 	
-	
+	private int collisionCheck = 1;
+
+	public int getCollisionCheck() {
+		return collisionCheck;
+	}
+
+	public void setCollisionCheck(int collisionCheck) {
+		this.collisionCheck = collisionCheck;
+	}
+
+
 
 	public ArrayList<MissileEntity> missileArray = new ArrayList<>();
 
@@ -38,8 +48,7 @@ public class ShipEntity extends Entity{
     	if(!missileArray.isEmpty()) {
 			for(int i = 0; i < missileArray.size(); i++) {
 				if(collision(missileArray.get(i))) {
-					missileArray.get(i).dx = missileArray.get(i).dx * -1;
-					missileArray.get(i).dy = missileArray.get(i).dy * -1;
+					collisionCheck = 0;
 				}
 			}
 		}

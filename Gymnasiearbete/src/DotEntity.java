@@ -23,7 +23,7 @@ public class DotEntity extends Entity{
 
 	}
 
-	//update
+
 
 	@Override
 	public void move(long deltaTime) {

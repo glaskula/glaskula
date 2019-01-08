@@ -24,7 +24,9 @@ public abstract class Entity {
      	this.yPos = 0;
      	this.speed = 0;
      	
-     	rec = new Rectangle((int)xPos, (int)yPos, image.getWidth(null), image.getHeight(null));
+     	int deltaSize = (int) (image.getWidth(null)*0.4);
+
+     	rec = new Rectangle((int)xPos+deltaSize, (int)yPos-deltaSize, image.getWidth(null)-2*deltaSize, image.getHeight(null)-2*deltaSize);
     	
     }
     public Entity (Image image, double xPos, double yPos, int speed){
@@ -69,6 +71,7 @@ public abstract class Entity {
 	}
 
 	public Rectangle getRectangle(){
+ 
         rec.setLocation((int)xPos, (int)yPos);
         return rec;
     }

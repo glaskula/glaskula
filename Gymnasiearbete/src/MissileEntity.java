@@ -28,35 +28,35 @@ public class MissileEntity extends Entity {
 	        
 	        if(Resulty == 1 && Resultx == 0) {
 	        	spawnlocationX = 0;
-	        	spawnlocationY = 100;
+	        	spawnlocationY = 150;
 	        }
 	        else if(Resulty == 1 && Resultx == 1) {
-	        	spawnlocationX = 100;
-	        	spawnlocationY = 100;
+	        	spawnlocationX = 150;
+	        	spawnlocationY = 150;
 	        }
 	        else if(Resulty == 0 && Resultx == 1) {
-	        	spawnlocationX = 100;
+	        	spawnlocationX = 150;
 	        	spawnlocationY = 0;
 	        }
 	        else if(Resulty == -1 && Resultx == 1) {
-	        	spawnlocationX = 100;
-	        	spawnlocationY = -100;
+	        	spawnlocationX = 150;
+	        	spawnlocationY = -150;
 	        }
 	        else if(Resulty == -1 && Resultx == 0) {
 	        	spawnlocationX = 0;
-	        	spawnlocationY = -100;
+	        	spawnlocationY = -150;
 	        }
 	        else if(Resulty == -1 && Resultx == -1) {
-	        	spawnlocationX = -100;
-	        	spawnlocationY = -100;
+	        	spawnlocationX = -150;
+	        	spawnlocationY = -150;
 	        }
 	        else if(Resulty == 0 && Resultx == -1) {
-	        	spawnlocationX = -100;
+	        	spawnlocationX = -150;
 	        	spawnlocationY = 0;
 	        }
 	        else if(Resulty == 1 && Resultx == -1) {
-	        	spawnlocationX = -100;
-	        	spawnlocationY = 100;
+	        	spawnlocationX = -150;
+	        	spawnlocationY = 150;
 	        }
 	        
 	    	dy = Resulty;
@@ -82,11 +82,21 @@ public class MissileEntity extends Entity {
         xPos += dx*(deltaTime/11114991.0)*speed/speedFactor;
         
         
-        if (yPos >= 710 || yPos <= -5) {
+        if (yPos >= 710) {
         	dy = dy * -1;
+        	yPos = yPos - 30;
         }
-        if (xPos >= 1360 || xPos <= 0) {
+        if (yPos <= -5) {
+        	dy = dy * -1;
+        	yPos = yPos + 30;
+        }
+        if (xPos >= 1360 ) {
         	dx = dx * -1;
+        	xPos = xPos -30;
+        }
+        if(xPos <= 0) {
+        	dx = dx * -1;
+        	xPos = xPos + 30;
         }
       
     }
