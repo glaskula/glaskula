@@ -7,10 +7,14 @@ import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
@@ -57,7 +61,7 @@ public class GameMain extends JFrame implements KeyListener{
         lastUpdateTime = System.currentTimeMillis();
 
         createWindow();  
-        loadObjects();  
+        loadObjects();
         gameLoop();  
     }  
       
@@ -83,6 +87,11 @@ public class GameMain extends JFrame implements KeyListener{
         ship = new ShipEntity(shipImg, x, y, 800);  
         dot = new DotEntity(dotImg);  
     }  
+    
+    public void loadSounds() {
+    	File sound = new File("Sound/sound.wav");
+    	PlaySound(sound);
+    }
       
     public void createWindow(){  
     	gameCanvas = new Canvas();
@@ -154,6 +163,7 @@ public class GameMain extends JFrame implements KeyListener{
     	if(keyDown.get("space") && ammo == 3){
         	ship.tryToFire();
         	ammo = 0;
+    	    loadSounds();
     	}
     	
 		long deltaTimedot = System.currentTimeMillis() - lastUpdateTime;
@@ -171,9 +181,10 @@ public class GameMain extends JFrame implements KeyListener{
     			ammo++;
     		}
     	}
-
     	
         ship.move(deltaTime);
+        
+        
     }
   
     public void render(){  
@@ -214,6 +225,18 @@ public class GameMain extends JFrame implements KeyListener{
         g.dispose();
         backBuffer.show();
     }  
+    
+    static void PlaySound(File sound) {
+    	try {
+    		Clip clip = AudioSystem.getClip();
+    		clip.open(AudioSystem.getAudioInputStream(sound));
+    		clip.start();
+    		
+    		Thread.sleep(clip.getMicrosecondLength()/1000);
+    	}catch(Exception e) {
+    		
+    	}
+    }
   
     public void gameLoop(){
         lastUpdateTimefps = System.nanoTime();

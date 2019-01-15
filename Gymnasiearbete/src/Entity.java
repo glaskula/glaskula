@@ -26,7 +26,7 @@ public abstract class Entity {
      	
      	int deltaSize = (int) (image.getWidth(null)*0.4);
 
-     	rec = new Rectangle((int)xPos+deltaSize, (int)yPos-deltaSize, image.getWidth(null)-2*deltaSize, image.getHeight(null)-2*deltaSize);
+     	rec = new Rectangle((int)xPos+deltaSize, (int)yPos-deltaSize, image.getWidth(null)-(2*deltaSize), image.getHeight(null)-(2*deltaSize));
     	
     }
     public Entity (Image image, double xPos, double yPos, int speed){
