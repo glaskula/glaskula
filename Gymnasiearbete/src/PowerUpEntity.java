@@ -2,9 +2,9 @@ import java.awt.Image;
 import java.util.Random;
 
 
-public class DotEntity extends Entity{
+public class PowerUpEntity extends Entity{
 	int nrOfDots = 0;
-	public DotEntity(Image image) {
+	public PowerUpEntity(Image image) {
 		super(image);
 
 		Random r = new Random();

@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
@@ -13,6 +14,8 @@ public abstract class Entity {
     protected int dx = 0, dy = 0;  // Rörelseriktning
    
     private boolean active = true; // Gör alla nya objekt aktiva.
+    
+    private int deltaSize;
    
     /**
      * Konstruktor
@@ -24,9 +27,9 @@ public abstract class Entity {
      	this.yPos = 0;
      	this.speed = 0;
      	
-     	int deltaSize = (int) (image.getWidth(null)*0.4);
+     	deltaSize = (int) (image.getWidth(null)*0.1);
 
-     	rec = new Rectangle((int)xPos+deltaSize, (int)yPos-deltaSize, image.getWidth(null)-(2*deltaSize), image.getHeight(null)-(2*deltaSize));
+     	rec = new Rectangle((int)xPos+deltaSize, (int)yPos+deltaSize, image.getWidth(null)-(2*deltaSize), image.getHeight(null)-(2*deltaSize));
     	
     }
     public Entity (Image image, double xPos, double yPos, int speed){
@@ -35,7 +38,9 @@ public abstract class Entity {
      	this.yPos = yPos;
      	this.speed = speed;
      	
-     	rec = new Rectangle((int)xPos, (int)yPos, image.getWidth(null), image.getHeight(null));
+     	deltaSize = (int) (image.getWidth(null)*0.15);
+     	
+     	rec = new Rectangle((int)xPos+deltaSize, (int)yPos+deltaSize, image.getWidth(null)-(2*deltaSize), image.getHeight(null)-(2*deltaSize));
     }
     
     public Image getImage() {
@@ -71,8 +76,7 @@ public abstract class Entity {
 	}
 
 	public Rectangle getRectangle(){
- 
-        rec.setLocation((int)xPos, (int)yPos);
+        rec.setLocation((int)xPos+deltaSize, (int)yPos+deltaSize);
         return rec;
     }
     

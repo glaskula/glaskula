@@ -27,12 +27,15 @@ public class GameMain extends JFrame implements KeyListener{
     private BufferStrategy backBuffer;
     private long lastUpdateTimefps;
     private long lastUpdateTime;
+    private long lastUpdateTimesound;
+    private long lastUpdateTimepowerup;
     private int ammo = 0;
   
     private HashMap<String, Boolean> keyDown = new HashMap<>();  
       
     private ShipEntity ship;  
     private DotEntity dot;  
+    private PowerUpEntity powerup;  
     
     private Image upright;
     private Image upleft;
@@ -43,9 +46,11 @@ public class GameMain extends JFrame implements KeyListener{
     private Image right;
     private Image shipImg;
     private Image dotImg;
+    private Image powerupImg;
     
     
     ArrayList<DotEntity> dotList = new ArrayList<>();
+    ArrayList<PowerUpEntity> powerupList = new ArrayList<>();
   
     public GameMain(){  
         super("Ett välstrukturerat och extremt bra gymnasiearbete");   
@@ -84,13 +89,48 @@ public class GameMain extends JFrame implements KeyListener{
         double x = gameCanvas.getWidth()/2 - shipImg.getWidth(null)/2;  
         double y = gameCanvas.getHeight() - shipImg.getHeight(null);  
           
-        ship = new ShipEntity(shipImg, x, y, 800);  
+        ship = new ShipEntity(shipImg, x, y, 1000);  
         dot = new DotEntity(dotImg);  
+        powerup = new PowerUpEntity(powerupImg);  
     }  
     
-    public void loadSounds() {
-    	File sound = new File("Sound/sound.wav");
-    	PlaySound(sound);
+    public void BackgroundSound() {
+    	File sound = new File("Sound/BackgroundSound.wav");
+  	      try{
+  	         new Thread(){
+  	            public void run(){
+  	          	PlaySound(sound);
+  	            }
+  	         }.start();
+  	      }catch(Throwable e){
+  	         e.printStackTrace();
+  	      }
+    }
+    
+    public void MissileSound() {
+    	File sound = new File("Sound/MissileSound.wav");
+  	      try{
+  	         new Thread(){
+  	            public void run(){
+  	          	PlaySound(sound);
+  	            }
+  	         }.start();
+  	      }catch(Throwable e){
+  	         e.printStackTrace();
+  	      }
+    }
+    
+    public void DotSound() {
+    	File sound = new File("Sound/DotSound.wav");
+  	      try{
+  	         new Thread(){
+  	            public void run(){
+  	          	PlaySound(sound);
+  	            }
+  	         }.start();
+  	      }catch(Throwable e){
+  	         e.printStackTrace();
+  	      }
     }
       
     public void createWindow(){  
@@ -162,12 +202,12 @@ public class GameMain extends JFrame implements KeyListener{
     	
     	if(keyDown.get("space") && ammo == 3){
         	ship.tryToFire();
+            MissileSound();
         	ammo = 0;
-    	    loadSounds();
     	}
     	
 		long deltaTimedot = System.currentTimeMillis() - lastUpdateTime;
-        if (deltaTimedot > 3000) {
+        if (deltaTimedot > 3000 && dotList.size() < 3) {
             dot = new DotEntity(dotImg);  
     		dotList.add(dot);
     		lastUpdateTime = System.currentTimeMillis();
@@ -179,12 +219,31 @@ public class GameMain extends JFrame implements KeyListener{
     		if(ship.collision(dotList.get(i)) && ammo < 3) {
     			dotList.remove(dotList.get(i));
     			ammo++;
+                DotSound();
+    		}
+    	}
+
+		long deltaTimepowerup = System.currentTimeMillis() - lastUpdateTimepowerup;
+        if (deltaTimepowerup > 3000 && powerupList.size() < 3) {
+            powerup = new PowerUpEntity(powerupImg);  
+    		powerupList.add(powerup);
+    		lastUpdateTimepowerup = System.currentTimeMillis();
+        }
+        
+    	for(int i = 0; i < powerupList.size(); i++) {
+    		if(ship.collision(powerupList.get(i))) {
+    			powerupList.remove(powerupList.get(i));
     		}
     	}
     	
+		long deltaTimestart = System.currentTimeMillis() - lastUpdateTimesound;
+        if (deltaTimestart > 13000) { 
+            BackgroundSound();
+    		lastUpdateTimesound = System.currentTimeMillis();
+        }
+    	
+    	
         ship.move(deltaTime);
-        
-        
     }
   
     public void render(){  
@@ -215,6 +274,8 @@ public class GameMain extends JFrame implements KeyListener{
             g.setColor(Color.RED);
             g.setFont(new Font("Copperplate Gothic Bold", Font.PLAIN, 80));
         	g.drawString("Press Enter to play again", 280, 600);
+        	
+        	
             if(keyDown.get("enter")) {
             	new GameMain().setVisible(false);
                 new GameMain();  
@@ -246,11 +307,11 @@ public class GameMain extends JFrame implements KeyListener{
 
             if(deltaTime > 33333){
                 lastUpdateTimefps = System.nanoTime();
-                
-                render();
+
                 if(ship.getCollisionCheck() == 1) {
                 	update(deltaTime);
                 }
+                render();
             }
         }
     }

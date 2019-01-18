@@ -28,35 +28,35 @@ public class MissileEntity extends Entity {
 	        
 	        if(Resulty == 1 && Resultx == 0) {
 	        	spawnlocationX = 0;
-	        	spawnlocationY = 150;
+	        	spawnlocationY = 100;
 	        }
 	        else if(Resulty == 1 && Resultx == 1) {
-	        	spawnlocationX = 150;
-	        	spawnlocationY = 150;
+	        	spawnlocationX = 100;
+	        	spawnlocationY = 100;
 	        }
 	        else if(Resulty == 0 && Resultx == 1) {
-	        	spawnlocationX = 150;
+	        	spawnlocationX = 100;
 	        	spawnlocationY = 0;
 	        }
 	        else if(Resulty == -1 && Resultx == 1) {
-	        	spawnlocationX = 150;
-	        	spawnlocationY = -150;
+	        	spawnlocationX = 100;
+	        	spawnlocationY = -100;
 	        }
 	        else if(Resulty == -1 && Resultx == 0) {
 	        	spawnlocationX = 0;
-	        	spawnlocationY = -150;
+	        	spawnlocationY = -100;
 	        }
 	        else if(Resulty == -1 && Resultx == -1) {
-	        	spawnlocationX = -150;
-	        	spawnlocationY = -150;
+	        	spawnlocationX = -100;
+	        	spawnlocationY = -100;
 	        }
 	        else if(Resulty == 0 && Resultx == -1) {
-	        	spawnlocationX = -150;
+	        	spawnlocationX = -100;
 	        	spawnlocationY = 0;
 	        }
 	        else if(Resulty == 1 && Resultx == -1) {
-	        	spawnlocationX = -150;
-	        	spawnlocationY = 150;
+	        	spawnlocationX = -100;
+	        	spawnlocationY = 100;
 	        }
 	        
 	    	dy = Resulty;
@@ -82,7 +82,7 @@ public class MissileEntity extends Entity {
         xPos += dx*(deltaTime/11114991.0)*speed/speedFactor;
         
         
-        if (yPos >= 710) {
+        if (yPos >= 740) {
         	dy = dy * -1;
         	yPos = yPos - 30;
         }
@@ -90,11 +90,11 @@ public class MissileEntity extends Entity {
         	dy = dy * -1;
         	yPos = yPos + 30;
         }
-        if (xPos >= 1360 ) {
+        if (xPos >= 1380 ) {
         	dx = dx * -1;
         	xPos = xPos -30;
         }
-        if(xPos <= 0) {
+        if(xPos <= -10) {
         	dx = dx * -1;
         	xPos = xPos + 30;
         }
