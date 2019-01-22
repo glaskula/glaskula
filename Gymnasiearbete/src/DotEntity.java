@@ -3,7 +3,6 @@ import java.util.Random;
 
 
 public class DotEntity extends Entity{
-	int nrOfDots = 0;
 	public DotEntity(Image image) {
 		super(image);
 
@@ -13,7 +12,7 @@ public class DotEntity extends Entity{
 		int Resultx = r.nextInt(Highx-Lowx) + Lowx;
 
 		int Lowy = 100;
-		int Highy = 700;
+		int Highy = 600;
 		int Resulty = r.nextInt(Highy-Lowy) + Lowy;
 
 		xPos = Resultx;

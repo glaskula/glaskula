@@ -38,7 +38,7 @@ public class GameMain extends JFrame implements KeyListener{
     private PowerUpEntity powerup;  
     
     private Image upright;
-    private Image upleft;
+	private Image upleft;
     private Image downright;
     private Image downleft;
     private Image down;
@@ -47,6 +47,7 @@ public class GameMain extends JFrame implements KeyListener{
     private Image shipImg;
     private Image dotImg;
     private Image powerupImg;
+    private Image hud;
     
     
     ArrayList<DotEntity> dotList = new ArrayList<>();
@@ -62,6 +63,7 @@ public class GameMain extends JFrame implements KeyListener{
         keyDown.put("up", false);
         keyDown.put("down", false);
         keyDown.put("enter", false);
+        keyDown.put("escape", false);
         
         lastUpdateTime = System.currentTimeMillis();
 
@@ -84,14 +86,17 @@ public class GameMain extends JFrame implements KeyListener{
         downright = new ImageIcon("images/playerdownright.png").getImage(); 
         downleft = new ImageIcon("images/playerdownleft.png").getImage(); 
         dotImg = new ImageIcon("images/dotImg.png").getImage();
+        powerupImg = new ImageIcon("images/player.png").getImage();
+        hud = new ImageIcon("images/hud.png").getImage();
 
           
         double x = gameCanvas.getWidth()/2 - shipImg.getWidth(null)/2;  
-        double y = gameCanvas.getHeight() - shipImg.getHeight(null);  
+        double y = gameCanvas.getHeight() - (shipImg.getHeight(null) + 100);  
           
         ship = new ShipEntity(shipImg, x, y, 1000);  
         dot = new DotEntity(dotImg);  
         powerup = new PowerUpEntity(powerupImg);  
+
     }  
     
     public void BackgroundSound() {
@@ -149,7 +154,7 @@ public class GameMain extends JFrame implements KeyListener{
     }  
   
     public void update(long deltaTime){
-    	int height = ship.getImage().getHeight(null);
+    	int height = ship.getImage().getHeight(null) + 100;
     	int width = ship.getImage().getWidth(null);
     	
         if(keyDown.get("right") && (keyDown.get("left"))) {
@@ -224,7 +229,7 @@ public class GameMain extends JFrame implements KeyListener{
     	}
 
 		long deltaTimepowerup = System.currentTimeMillis() - lastUpdateTimepowerup;
-        if (deltaTimepowerup > 3000 && powerupList.size() < 3) {
+        if (deltaTimepowerup > 30000 && ship.missileArray.size() >= 4) {
             powerup = new PowerUpEntity(powerupImg);  
     		powerupList.add(powerup);
     		lastUpdateTimepowerup = System.currentTimeMillis();
@@ -233,6 +238,8 @@ public class GameMain extends JFrame implements KeyListener{
     	for(int i = 0; i < powerupList.size(); i++) {
     		if(ship.collision(powerupList.get(i))) {
     			powerupList.remove(powerupList.get(i));
+    	        ship.powerupcheck();
+                DotSound();
     		}
     	}
     	
@@ -242,8 +249,10 @@ public class GameMain extends JFrame implements KeyListener{
     		lastUpdateTimesound = System.currentTimeMillis();
         }
     	
-    	
         ship.move(deltaTime);
+        
+        if(keyDown.get("escape")) {
+        }
     }
   
     public void render(){  
@@ -252,24 +261,30 @@ public class GameMain extends JFrame implements KeyListener{
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, gameCanvas.getWidth(), gameCanvas.getHeight());
         ship.draw(g);
-
+        
+        g.drawImage(hud, 0, 706, null);
         
     	if(!dotList.isEmpty()) {
     		for(int i = 0; i < dotList.size(); i++)
     			dotList.get(i).draw(g);
     	}
     	
+      	if(!powerupList.isEmpty()) {
+    		for(int i = 0; i < powerupList.size(); i++)
+    			powerupList.get(i).draw(g);
+    	}
+    	
         g.setColor(Color.BLACK);
         g.setFont(new Font("Copperplate Gothic Bold", Font.PLAIN, 80));
     	g.drawString(ammo + "/3", 1300, 780);
         g.setFont(new Font("Copperplate Gothic Bold", Font.PLAIN, 60));
-    	g.drawString("Score: " + ship.missileArray.size(), 0, 50);
+    	g.drawString("Score: " + (ship.missileArray.size() + ship.getCollisionCheckpowerup()), 0, 50);
     	
     	if(ship.getCollisionCheck() == 0) {
             g.setFont(new Font("Copperplate Gothic Bold", Font.PLAIN, 100));
         	g.drawString("Gameover", 500, 300);
             g.setFont(new Font("Copperplate Gothic Bold", Font.PLAIN, 80));
-        	g.drawString("Score: " + ship.missileArray.size(), 565, 500);
+        	g.drawString("Score: " + (ship.missileArray.size() + ship.getCollisionCheckpowerup()), 565, 500);
         	
             g.setColor(Color.RED);
             g.setFont(new Font("Copperplate Gothic Bold", Font.PLAIN, 80));
@@ -334,6 +349,9 @@ public class GameMain extends JFrame implements KeyListener{
         else if(key == KeyEvent.VK_ENTER)  
             keyDown.put("enter", true);  
         
+        else if(key == KeyEvent.VK_ESCAPE)  
+            keyDown.put("escape", true);  
+        
         if(key == KeyEvent.VK_D)  
             keyDown.put("left", true);  
         else if(key == KeyEvent.VK_G)  
@@ -368,6 +386,9 @@ public class GameMain extends JFrame implements KeyListener{
             keyDown.put("up", false);  
         else if(key == KeyEvent.VK_F)  
             keyDown.put("down", false);
+        
+        else if(key == KeyEvent.VK_ESCAPE)  
+            keyDown.put("escape", false);
        
     }  
     public void keyTyped(KeyEvent e) {  

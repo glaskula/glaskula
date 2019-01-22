@@ -82,7 +82,7 @@ public class MissileEntity extends Entity {
         xPos += dx*(deltaTime/11114991.0)*speed/speedFactor;
         
         
-        if (yPos >= 740) {
+        if (yPos >= 650) {
         	dy = dy * -1;
         	yPos = yPos - 30;
         }

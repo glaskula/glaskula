@@ -3,7 +3,6 @@ import java.util.Random;
 
 
 public class PowerUpEntity extends Entity{
-	int nrOfDots = 0;
 	public PowerUpEntity(Image image) {
 		super(image);
 
@@ -13,7 +12,7 @@ public class PowerUpEntity extends Entity{
 		int Resultx = r.nextInt(Highx-Lowx) + Lowx;
 
 		int Lowy = 100;
-		int Highy = 700;
+		int Highy = 500;
 		int Resulty = r.nextInt(Highy-Lowy) + Lowy;
 
 		xPos = Resultx;

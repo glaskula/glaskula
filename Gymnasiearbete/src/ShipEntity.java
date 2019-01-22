@@ -7,9 +7,18 @@ import javax.swing.ImageIcon;
 
 public class ShipEntity extends Entity{
 
-	public MissileEntity missile = null;
-	
+	public MissileEntity missile = null;  
+    private int powerup = 0;
 	private int collisionCheck = 1;
+	private int collisionCheckpowerup = 0;
+
+	public int getCollisionCheckpowerup() {
+		return collisionCheckpowerup;
+	}
+
+	public void setCollisionCheckpowerup(int collisionCheckpowerup) {
+		this.collisionCheckpowerup = collisionCheckpowerup;
+	}
 
 	public int getCollisionCheck() {
 		return collisionCheck;
@@ -18,10 +27,10 @@ public class ShipEntity extends Entity{
 	public void setCollisionCheck(int collisionCheck) {
 		this.collisionCheck = collisionCheck;
 	}
-
-
+	
 
 	public ArrayList<MissileEntity> missileArray = new ArrayList<>();
+	
 
 	public ShipEntity (Image image, double xPos, double yPos, int speed){
 		super(image, xPos, yPos, speed);
@@ -47,7 +56,12 @@ public class ShipEntity extends Entity{
     public void checkCollisionWhithMissiles(){
     	if(!missileArray.isEmpty()) {
 			for(int i = 0; i < missileArray.size(); i++) {
-				if(collision(missileArray.get(i))) {
+				if(collision(missileArray.get(i)) && powerup == 1) {
+					missileArray.remove(missileArray.get(i));
+					powerup = 0;
+					collisionCheckpowerup++;
+				}
+				else if (collision(missileArray.get(i)) && powerup == 0){
 					collisionCheck = 0;
 				}
 			}
@@ -55,7 +69,10 @@ public class ShipEntity extends Entity{
 
     }
     
-    
+	public void powerupcheck(){
+		if(powerup < 1)
+			powerup++;
+	}
 
 	public void move(long deltaTime) {
 		if(!missileArray.isEmpty()) {
