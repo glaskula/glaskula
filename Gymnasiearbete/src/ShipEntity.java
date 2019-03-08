@@ -69,6 +69,14 @@ public class ShipEntity extends Entity{
 
     }
     
+	public int getPowerup() {
+		return powerup;
+	}
+
+	public void setPowerup(int powerup) {
+		this.powerup = powerup;
+	}
+
 	public void powerupcheck(){
 		if(powerup < 1)
 			powerup++;
