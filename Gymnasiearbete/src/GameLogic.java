@@ -22,11 +22,13 @@ public class GameLogic {
 	private long lastUpdateTime;
 	private long lastUpdateTimesound;
 	private long lastUpdateTimepowerup;
-	private int ammo = 0;
+
 
 	private ShipEntity ship;  
 	private DotEntity dot;  
 	private PowerUpEntity powerup;  
+	ArrayList<DotEntity> dotList = new ArrayList<>();
+	ArrayList<PowerUpEntity> powerupList = new ArrayList<>();
 
 	private Image upright;
 	private Image upleft;
@@ -41,12 +43,8 @@ public class GameLogic {
 
 	private GameView gameView;
 
-
-	ArrayList<DotEntity> dotList = new ArrayList<>();
-	ArrayList<PowerUpEntity> powerupList = new ArrayList<>();
-
 	public GameLogic(GameView gameView){
-		
+
 		this.gameView = gameView;
 		lastUpdateTime = System.currentTimeMillis();
 
@@ -66,17 +64,17 @@ public class GameLogic {
 		upright = new ImageIcon("images/playerupright.png").getImage(); 
 		upleft = new ImageIcon("images/playerupleft.png").getImage(); 
 		downright = new ImageIcon("images/playerdownright.png").getImage(); 
-		downleft = new ImageIcon("images/playerdownleft.png").getImage(); 
+		downleft = new ImageIcon("images/playerdownleft.png").getImage();
 		dotImg = new ImageIcon("images/dotImg.png").getImage();
 		powerupImg = new ImageIcon("images/player.png").getImage();
 
-		
+
 		int x = gameView.getGameCanvas().getWidth()/2 - shipImg.getWidth(null)/2;  
 		int y = gameView.getGameCanvas().getHeight() - (shipImg.getHeight(null) + 100);  
 
-		ship = new ShipEntity(shipImg, x, y, 1000);  
 		dot = new DotEntity(dotImg);  
 		powerup = new PowerUpEntity(powerupImg);  
+		ship = new ShipEntity(shipImg, x, y, 1000);  
 	} 
 
 	public void BackgroundSound() {
@@ -170,10 +168,10 @@ public class GameLogic {
 			ship.setImage(downleft);
 		} 
 
-		if(gameView.getKeyDown().get("space") && ammo == 3){
+		if(gameView.getKeyDown().get("space") && gameView.getAmmo() == 3){
 			ship.tryToFire();
 			MissileSound();
-			ammo = 0;
+			gameView.setAmmo(0);
 		}
 
 		long deltaTimedot = System.currentTimeMillis() - lastUpdateTime;
@@ -186,9 +184,9 @@ public class GameLogic {
 		ship.checkCollisionWhithMissiles();
 
 		for(int i = 0; i < dotList.size(); i++) {
-			if(ship.collision(dotList.get(i)) && ammo < 3) {
+			if(ship.collision(dotList.get(i)) && gameView.getAmmo() < 3) {
 				dotList.remove(dotList.get(i));
-				ammo++;
+				gameView.setAmmo(gameView.getAmmo() + 1);
 				DotSound();
 			}
 		}
@@ -241,7 +239,7 @@ public class GameLogic {
 				if(ship.getCollisionCheck() == 1) {
 					update(deltaTime);
 				}
-				gameView.render(ship);
+				gameView.render(ship, dotList, powerupList);
 			}
 		}
 	}

@@ -41,6 +41,8 @@ public class ShipEntity extends Entity{
 			for(int i = 0; i < missileArray.size(); i++)
 				missileArray.get(i).draw(g);
 		}
+
+		
 		super.draw(g);
 	}
 

@@ -26,19 +26,23 @@ public class GameView extends JFrame implements KeyListener{
     private BufferStrategy backBuffer;
   
     private HashMap<String, Boolean> keyDown = new HashMap<>();  
+   
       
-    
-    private int ammo = 0;
     private Image hud1;
     private Image hud2;
     private Image Background;
+	private int ammo = 0;
     
-    
-    ArrayList<DotEntity> dotList = new ArrayList<>();
-    ArrayList<PowerUpEntity> powerupList = new ArrayList<>();
-    
-  
-    public GameView(){  
+
+	public int getAmmo() {
+		return ammo;
+	}
+
+	public void setAmmo(int ammo) {
+		this.ammo = ammo;
+	}
+
+	public GameView(){  
         super("Ett välstrukturerat och extremt bra gymnasiearbete");   
         addKeyListener(this);  
   
@@ -49,7 +53,11 @@ public class GameView extends JFrame implements KeyListener{
         keyDown.put("down", false);
         keyDown.put("enter", false);
         keyDown.put("escape", false);
+        
 
+		Background = new ImageIcon("images/Background.jpg").getImage();
+		hud1 = new ImageIcon("images/Hud1.png").getImage();
+		hud2 = new ImageIcon("images/Hud2.png").getImage();
 
         createWindow();   
     }  
@@ -108,15 +116,16 @@ public class GameView extends JFrame implements KeyListener{
         backBuffer = gameCanvas.getBufferStrategy();
     }  
   
-    public void render(ShipEntity ship){  
+    public void render(ShipEntity ship,  ArrayList<DotEntity> dotList, ArrayList<PowerUpEntity> powerupList){  
     	
         Graphics2D g = (Graphics2D)backBuffer.getDrawGraphics();
         
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, gameCanvas.getWidth(), gameCanvas.getHeight());
+        
         g.drawImage(Background, 0, 0, null);
         ship.draw(g);
-         if(ship.getPowerup() == 1) {
+        if(ship.getPowerup() == 1) {
         	g.drawImage(hud2, 0, 706, null);
         }
         else g.drawImage(hud1, 0, 706, null);
