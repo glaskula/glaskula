@@ -15,7 +15,7 @@ public abstract class Entity {
    
     private boolean active = true; // Gör alla nya objekt aktiva.
     
-    private int deltaSize;
+    private int deltaSize = 0;
    
     /**
      * Konstruktor
@@ -27,9 +27,15 @@ public abstract class Entity {
      	this.yPos = 0;
      	this.speed = 0;
      	
-     	deltaSize = (int) (image.getWidth(null)*0.1);
+     	try {
+     		deltaSize = (int) (image.getWidth(null)*0.1);
+         	rec = new Rectangle((int)xPos+deltaSize, (int)yPos+deltaSize, image.getWidth(null)-(2*deltaSize), image.getHeight(null)-(2*deltaSize));
+     	}catch(Exception e) {
+     		
+     		rec = new Rectangle(0,0,30,30);
+     	}
 
-     	rec = new Rectangle((int)xPos+deltaSize, (int)yPos+deltaSize, image.getWidth(null)-(2*deltaSize), image.getHeight(null)-(2*deltaSize));
+
     	
     }
     public Entity (Image image, double xPos, double yPos, int speed){

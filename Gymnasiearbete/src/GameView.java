@@ -27,9 +27,6 @@ public class GameView extends JFrame implements KeyListener{
   
     private HashMap<String, Boolean> keyDown = new HashMap<>();  
    
-      
-    private Image hud1;
-    private Image hud2;
     private Image Background;
 	private int ammo = 0;
     
@@ -56,8 +53,6 @@ public class GameView extends JFrame implements KeyListener{
         
 
 		Background = new ImageIcon("images/Background.jpg").getImage();
-		hud1 = new ImageIcon("images/Hud1.png").getImage();
-		hud2 = new ImageIcon("images/Hud2.png").getImage();
 
         createWindow();   
     }  
@@ -116,7 +111,7 @@ public class GameView extends JFrame implements KeyListener{
         backBuffer = gameCanvas.getBufferStrategy();
     }  
   
-    public void render(ShipEntity ship,  ArrayList<DotEntity> dotList, ArrayList<PowerUpEntity> powerupList){  
+    public void render(ShipEntity ship,  ArrayList<Entity> drawList){  
     	
         Graphics2D g = (Graphics2D)backBuffer.getDrawGraphics();
         
@@ -124,20 +119,11 @@ public class GameView extends JFrame implements KeyListener{
         g.fillRect(0, 0, gameCanvas.getWidth(), gameCanvas.getHeight());
         
         g.drawImage(Background, 0, 0, null);
-        ship.draw(g);
-        if(ship.getPowerup() == 1) {
-        	g.drawImage(hud2, 0, 706, null);
-        }
-        else g.drawImage(hud1, 0, 706, null);
         
-    	if(!dotList.isEmpty()) {
-    		for(int i = 0; i < dotList.size(); i++)
-    			dotList.get(i).draw(g);
-    	}
-    	
-      	if(!powerupList.isEmpty()) {
-    		for(int i = 0; i < powerupList.size(); i++)
-    			powerupList.get(i).draw(g);
+       
+    	if(!drawList.isEmpty()) {
+    		for(int i = 0; i < drawList.size(); i++)
+    			drawList.get(i).draw(g);
     	}
     	
         g.setColor(Color.BLACK);
@@ -156,11 +142,6 @@ public class GameView extends JFrame implements KeyListener{
             g.setFont(new Font("Copperplate Gothic Bold", Font.PLAIN, 80));
         	g.drawString("Press Enter to play again", 280, 600);
         	
-        	
-            if(keyDown.get("enter")) {
-            	new GameView().setVisible(false);
-                new GameView();  
-            }
     	}
     	
     	

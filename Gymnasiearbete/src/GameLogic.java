@@ -23,12 +23,13 @@ public class GameLogic {
 	private long lastUpdateTimesound;
 	private long lastUpdateTimepowerup;
 
-
+	
+	private TextScreen TS;  
 	private ShipEntity ship;  
-	private DotEntity dot;  
-	private PowerUpEntity powerup;  
-	ArrayList<DotEntity> dotList = new ArrayList<>();
-	ArrayList<PowerUpEntity> powerupList = new ArrayList<>();
+	private Entity dot;  
+	private Entity powerup;  
+	ArrayList<Entity> dotList = new ArrayList<>();
+	ArrayList<Entity> powerupList = new ArrayList<>();
 
 	private Image upright;
 	private Image upleft;
@@ -49,7 +50,6 @@ public class GameLogic {
 		lastUpdateTime = System.currentTimeMillis();
 
 		loadObjects();
-		gameLoop(); 
 	}
 
 	public void loadObjects(){        
@@ -239,7 +239,24 @@ public class GameLogic {
 				if(ship.getCollisionCheck() == 1) {
 					update(deltaTime);
 				}
-				gameView.render(ship, dotList, powerupList);
+
+				ArrayList<Entity> drawList = new ArrayList<>();
+				drawList.clear();
+
+				drawList.addAll(dotList);
+				drawList.addAll(powerupList);
+				drawList.add(ship);
+
+				if(ship.getCollisionCheck() == 0) {
+					TS = new TextScreen(ship);
+					drawList.add(TS);
+					if(gameView.getKeyDown().get("enter")) {
+						gameView.setVisible(false);
+						GameMain.gameStart(); 
+					}
+				}
+
+				gameView.render(ship, drawList);
 			}
 		}
 	}

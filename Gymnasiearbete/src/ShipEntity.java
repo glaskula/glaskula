@@ -8,9 +8,11 @@ import javax.swing.ImageIcon;
 public class ShipEntity extends Entity{
 
 	public MissileEntity missile = null;  
-    private int powerup = 0;
+	private int powerup = 0;
 	private int collisionCheck = 1;
 	private int collisionCheckpowerup = 0;
+	private Image hud1;
+	private Image hud2;
 
 	public int getCollisionCheckpowerup() {
 		return collisionCheckpowerup;
@@ -27,22 +29,31 @@ public class ShipEntity extends Entity{
 	public void setCollisionCheck(int collisionCheck) {
 		this.collisionCheck = collisionCheck;
 	}
-	
+
+
 
 	public ArrayList<MissileEntity> missileArray = new ArrayList<>();
-	
+
 
 	public ShipEntity (Image image, double xPos, double yPos, int speed){
 		super(image, xPos, yPos, speed);
 	}
 
 	public void draw(Graphics2D g){
+
+		hud1 = new ImageIcon("images/Hud1.png").getImage();
+		hud2 = new ImageIcon("images/Hud2.png").getImage();
+		
 		if(!missileArray.isEmpty()) {
 			for(int i = 0; i < missileArray.size(); i++)
 				missileArray.get(i).draw(g);
 		}
 
-		
+		if(powerup == 1) {
+			g.drawImage(hud2, 0, 706, null);
+		}
+		else g.drawImage(hud1, 0, 706, null);
+
 		super.draw(g);
 	}
 
@@ -54,9 +65,9 @@ public class ShipEntity extends Entity{
 
 		return true;
 	}
-	
-    public void checkCollisionWhithMissiles(){
-    	if(!missileArray.isEmpty()) {
+
+	public void checkCollisionWhithMissiles(){
+		if(!missileArray.isEmpty()) {
 			for(int i = 0; i < missileArray.size(); i++) {
 				if(collision(missileArray.get(i)) && powerup == 1) {
 					missileArray.remove(missileArray.get(i));
@@ -69,8 +80,8 @@ public class ShipEntity extends Entity{
 			}
 		}
 
-    }
-    
+	}
+
 	public int getPowerup() {
 		return powerup;
 	}
@@ -89,7 +100,7 @@ public class ShipEntity extends Entity{
 			for(int i = 0; i < missileArray.size(); i++)
 				missileArray.get(i).move(deltaTime);
 		}
-		
+
 		double speedFactor = 1;
 
 		if(dx != 0 && dy != 0) {
